@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class KnightTour {
 
     public static void main(String[] args) {
@@ -8,7 +6,7 @@ public class KnightTour {
 
         int maxNumbMoves = HEIGHT_OF_BOARD * WIDTH_OF_BOARD;
         int countSuccessfulTours = 0;
-        int numbMove = 0;
+        int numberMove;
 
         for (int i = 0; i < HEIGHT_OF_BOARD; i++) {
             for (int j = 0; j < WIDTH_OF_BOARD; j++) {
@@ -16,20 +14,20 @@ public class KnightTour {
                 Knight knightA = new Knight(chessBoard, i, j);
 
                 // Run the knight tour and monitor count moves
-                numbMove = knightA.startTour();
+                numberMove = knightA.startTour();
 
-                if (numbMove == maxNumbMoves) {
+                if (numberMove == maxNumbMoves) {
                     ++countSuccessfulTours;
                 } else {
                     System.out.println("It was a bad tour! I started my journey from the square " +
-                            "with coorinates (" + knightA.getLocationByAxisX() + " ; "
+                            "with coordinates (" + knightA.getLocationByAxisX() + " ; "
                             + knightA.getLocationByAxisY() + ")");
                     // Display statistics.
-                    chessBoard.printChessBoard(numbMove);
+                    chessBoard.printChessBoard(numberMove);
                 }
             }
         }
 
-        System.out.println("Number of successful tours: " + countSuccessfulTours);
+        System.out.println("\nNumber of successful tours: " + countSuccessfulTours);
     }
 }

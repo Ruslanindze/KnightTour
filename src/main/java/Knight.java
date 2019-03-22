@@ -2,6 +2,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 
 public class Knight {
+    final int MARKED_SQUARE = -1;
     private ChessBoard chessBoard;
     // A variable availableMoves stores variants moving ([x][y])
     private int[][] availableMoves = {
@@ -19,9 +20,9 @@ public class Knight {
     private int locationByAxisX;
 
     // It's private a object-random
-    private SecureRandom knightRand = new SecureRandom();
+    private SecureRandom Random = new SecureRandom();
     // The variable stores number of moves made
-    private int numbMove = 0;
+    private int numberOfMovesMade = 0;
 
 
     /**
@@ -49,11 +50,23 @@ public class Knight {
      */
     public Knight(ChessBoard chessBoard, int y, int x) {
         this.chessBoard = chessBoard;
-        setLocation(y, x);
+
+        // If is incorrect data then to set location by default (3, 3)
+        if ((y < 0) || (y >= chessBoard.getHeightTheBoard())||
+                (x < 0) || (x >= chessBoard.getWidthTheBoard())){
+            locationByAxisY = chessBoard.getHeightTheBoard() / 2;
+            locationByAxisX = chessBoard.getWidthTheBoard() / 2;
+        }
+
+        ++numberOfMovesMade;
+        chessBoard.setValueSquare(locationByAxisY, locationByAxisX, MARKED_SQUARE);
+
+        reduceAccessibilityNumb();
     }
 
+
     /**
-     * This getter is.
+     * This is a getter for the property locationByAxisY.
      *
      * @return Coordinate location the Knight by axis "Y"
      */
@@ -62,7 +75,7 @@ public class Knight {
     }
 
     /**
-     * This getter is.
+     * This is a getter for the property locationByAxisX.
      *
      * @return Coordinate location the Knight by axis "X"
      */
@@ -76,37 +89,16 @@ public class Knight {
      * @param numbMove - number move
      */
     public void setNumbMove(int numbMove) {
-        this.numbMove = numbMove;
+        this.numberOfMovesMade = numbMove;
     }
 
     /**
-     * This getter is.
+     * This is a getter for the property numberOfMovesMade.
      *
      * @return Integer number of moves.
      */
     public int getNumbMove() {
-        return numbMove;
-    }
-
-
-    /**
-     * The setter sets location of a Knight.
-     *
-     * @param locationByAxisY - the location by axis "Y"
-     * @param locationByAxisX - the location by axis "X"
-     */
-    public void setLocation(int locationByAxisY, int locationByAxisX) {
-        // If is incorrect data then to set location by default (3, 3)
-        if ((locationByAxisY < 0) || (locationByAxisY >= chessBoard.getHeightTheBoard()))
-            locationByAxisY = chessBoard.getHeightTheBoard() / 2;
-        if ((locationByAxisX < 0) || (locationByAxisX >= chessBoard.getWidthTheBoard()))
-            locationByAxisX = chessBoard.getWidthTheBoard() / 2;
-
-        this.locationByAxisY = locationByAxisY;
-        this.locationByAxisX = locationByAxisX;
-
-        ++numbMove;
-        reduceAcessibilityNumb();
+        return numberOfMovesMade;
     }
 
 
@@ -115,7 +107,7 @@ public class Knight {
      *
      * @return Integer list of possible moves
      */
-    public ArrayList<Integer> getPossibleMoves() {
+    private ArrayList<Integer> getPossibleMoves() {
         ArrayList<Integer> possibleMoves = new ArrayList<Integer>();
 
         for (int i = 0; i < availableMoves.length; i++) {
@@ -133,53 +125,36 @@ public class Knight {
     }
 
     /**
-     * The method random chooses and returns moves from possible of moves.
-     *
-     * @param possibleMoves - possible of moves for Knight
-     * @return Integer random number
-     */
-    public int randomChooseMove(ArrayList<Integer> possibleMoves) {
-        if (!possibleMoves.isEmpty()) {
-            return knightRand.nextInt(possibleMoves.size());
-        }
-
-        return -1;
-    }
-
-    /**
      * The method chooses most preferred the move.
      *
      * @param possibleMoves - possible of moves for Knight
      * @return Preferred move number
      */
-    public int choosePreferrableMove(ArrayList<Integer> possibleMoves) {
+    private int choosePreferableMove(ArrayList<Integer> possibleMoves) {
         int chooseMoveNumb = -1;
-        int valuePrefferedofSquare = availableMoves.length;
+        int valuePreferredOfSquare = availableMoves.length;
 
-        for (int i = 0; i < possibleMoves.size(); i++) {
-            int currMoveNumb = possibleMoves.get(i);
+        for (int currMoveNumb:possibleMoves) {
             int tempAxisY = locationByAxisY + availableMoves[currMoveNumb][1];
             int tempAxisX = locationByAxisX + availableMoves[currMoveNumb][0];
 
-            if (chessBoard.getValueSquare(tempAxisY, tempAxisX) < valuePrefferedofSquare) {
-                valuePrefferedofSquare = chessBoard.getValueSquare(tempAxisY, tempAxisX);
-            }
+            valuePreferredOfSquare = Math.min(valuePreferredOfSquare,
+                    chessBoard.getValueSquare(tempAxisY, tempAxisX));
         }
 
         ArrayList<Integer> listCorrectChoices = new ArrayList<Integer>();
 
-        for (int i = 0; i < possibleMoves.size(); i++) {
-            int currMoveNumb = possibleMoves.get(i);
+        for (int currMoveNumb:possibleMoves) {
             int tempAxisY = locationByAxisY + availableMoves[currMoveNumb][1];
             int tempAxisX = locationByAxisX + availableMoves[currMoveNumb][0];
 
-            if (chessBoard.getValueSquare(tempAxisY, tempAxisX) == valuePrefferedofSquare) {
+            if (chessBoard.getValueSquare(tempAxisY, tempAxisX) == valuePreferredOfSquare) {
                 listCorrectChoices.add(currMoveNumb);
             }
         }
 
-        int randomIndex = randomChooseMove(listCorrectChoices);
-        if (randomIndex > -1) {
+        if (!listCorrectChoices.isEmpty()) {
+            int randomIndex = Random.nextInt(listCorrectChoices.size());
             chooseMoveNumb = listCorrectChoices.get(randomIndex);
         }
 
@@ -189,16 +164,14 @@ public class Knight {
     /**
      * The method reduces the price of squares depending on the knight's move
      */
-    public void reduceAcessibilityNumb() {
-        chessBoard.setValueSquare(locationByAxisY, locationByAxisX, -1);
+    private void reduceAccessibilityNumb() {
         ArrayList<Integer> possibleMoves = getPossibleMoves();
 
-        for (int i = 0; i < possibleMoves.size(); i++) {
-            int currentMoveNumb = possibleMoves.get(i);
+        for (int currentMoveNumb:possibleMoves) {
             int tempAxisY = locationByAxisY + availableMoves[currentMoveNumb][1];
             int tempAxisX = locationByAxisX + availableMoves[currentMoveNumb][0];
 
-            chessBoard.setValueSquare(locationByAxisY, locationByAxisX,
+            chessBoard.setValueSquare(tempAxisY, tempAxisX,
                     chessBoard.getValueSquare(tempAxisY, tempAxisX) - 1);
         }
     }
@@ -208,12 +181,14 @@ public class Knight {
      *
      * @param moveNumber - for to select the direction of travel
      */
-    public void toMove(int moveNumber) {
+    private void toMove(int moveNumber) {
         locationByAxisY += availableMoves[moveNumber][1];
         locationByAxisX += availableMoves[moveNumber][0];
 
-        ++numbMove;
-        reduceAcessibilityNumb();
+        ++numberOfMovesMade;
+        chessBoard.setValueSquare(locationByAxisY, locationByAxisX, -1);
+
+        reduceAccessibilityNumb();
     }
 
     /**
@@ -222,25 +197,14 @@ public class Knight {
      * @return int getNumbMove
      */
     public int startTour() {
-        boolean possMove = true; // By default move is possible
-        int maxNumberOfMoves = chessBoard.getMaxNumberOfMoves();
-        int moveNumber;
-
-        while (possMove) {
-            possMove = false;
-
+        while(!getPossibleMoves().isEmpty()) {
             ArrayList<Integer> listPosMov = getPossibleMoves();
-            moveNumber = choosePreferrableMove(listPosMov);
+            int moveNumber = choosePreferableMove(listPosMov);
 
             if (moveNumber > -1) {
                 toMove(moveNumber);
-                if ((numbMove == maxNumberOfMoves)) {
-                    break;
-                }
-                possMove = true;
             }
         }
-
         return getNumbMove();
     }
 }
