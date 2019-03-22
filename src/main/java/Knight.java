@@ -2,7 +2,8 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 
 public class Knight {
-    final int MARKED_SQUARE = -1;
+    private final int MARKED_SQUARE = -1;
+    private final int ERROR_RETURN = -1;
     private ChessBoard chessBoard;
     // A variable availableMoves stores variants moving ([x][y])
     private int[][] availableMoves = {
@@ -18,12 +19,10 @@ public class Knight {
     // These variables store location the knight
     private int locationByAxisY;
     private int locationByAxisX;
-
     // It's private a object-random
-    private SecureRandom Random = new SecureRandom();
+    private SecureRandom random = new SecureRandom();
     // The variable stores number of moves made
     private int numberOfMovesMade = 0;
-
 
     /**
      * Constructor without any parameters unsupported on this version.
@@ -52,8 +51,8 @@ public class Knight {
         this.chessBoard = chessBoard;
 
         // If is incorrect data then to set location by default (3, 3)
-        if ((y < 0) || (y >= chessBoard.getHeightTheBoard())||
-                (x < 0) || (x >= chessBoard.getWidthTheBoard())){
+        if ((y < 0) || (y >= chessBoard.getHeightTheBoard()) ||
+                (x < 0) || (x >= chessBoard.getWidthTheBoard())) {
             locationByAxisY = chessBoard.getHeightTheBoard() / 2;
             locationByAxisX = chessBoard.getWidthTheBoard() / 2;
         }
@@ -63,7 +62,6 @@ public class Knight {
 
         reduceAccessibilityNumb();
     }
-
 
     /**
      * This is a getter for the property locationByAxisY.
@@ -101,7 +99,6 @@ public class Knight {
         return numberOfMovesMade;
     }
 
-
     /**
      * The method returns possibles of moves for a Knight from current location.
      *
@@ -131,20 +128,21 @@ public class Knight {
      * @return Preferred move number
      */
     private int choosePreferableMove(ArrayList<Integer> possibleMoves) {
-        int chooseMoveNumb = -1;
+        int chooseMoveNumb = ERROR_RETURN;
         int valuePreferredOfSquare = availableMoves.length;
 
-        for (int currMoveNumb:possibleMoves) {
+        for (int currMoveNumb : possibleMoves) {
             int tempAxisY = locationByAxisY + availableMoves[currMoveNumb][1];
             int tempAxisX = locationByAxisX + availableMoves[currMoveNumb][0];
 
-            valuePreferredOfSquare = Math.min(valuePreferredOfSquare,
+            valuePreferredOfSquare = Math.min(
+                    valuePreferredOfSquare,
                     chessBoard.getValueSquare(tempAxisY, tempAxisX));
         }
 
         ArrayList<Integer> listCorrectChoices = new ArrayList<Integer>();
 
-        for (int currMoveNumb:possibleMoves) {
+        for (int currMoveNumb : possibleMoves) {
             int tempAxisY = locationByAxisY + availableMoves[currMoveNumb][1];
             int tempAxisX = locationByAxisX + availableMoves[currMoveNumb][0];
 
@@ -154,8 +152,7 @@ public class Knight {
         }
 
         if (!listCorrectChoices.isEmpty()) {
-            int randomIndex = Random.nextInt(listCorrectChoices.size());
-            chooseMoveNumb = listCorrectChoices.get(randomIndex);
+            chooseMoveNumb = listCorrectChoices.get(random.nextInt(listCorrectChoices.size()));
         }
 
         return chooseMoveNumb;
@@ -167,7 +164,7 @@ public class Knight {
     private void reduceAccessibilityNumb() {
         ArrayList<Integer> possibleMoves = getPossibleMoves();
 
-        for (int currentMoveNumb:possibleMoves) {
+        for (int currentMoveNumb : possibleMoves) {
             int tempAxisY = locationByAxisY + availableMoves[currentMoveNumb][1];
             int tempAxisX = locationByAxisX + availableMoves[currentMoveNumb][0];
 
@@ -186,7 +183,7 @@ public class Knight {
         locationByAxisX += availableMoves[moveNumber][0];
 
         ++numberOfMovesMade;
-        chessBoard.setValueSquare(locationByAxisY, locationByAxisX, -1);
+        chessBoard.setValueSquare(locationByAxisY, locationByAxisX, MARKED_SQUARE);
 
         reduceAccessibilityNumb();
     }
@@ -197,11 +194,11 @@ public class Knight {
      * @return int getNumbMove
      */
     public int startTour() {
-        while(!getPossibleMoves().isEmpty()) {
+        while (!getPossibleMoves().isEmpty()) {
             ArrayList<Integer> listPosMov = getPossibleMoves();
             int moveNumber = choosePreferableMove(listPosMov);
 
-            if (moveNumber > -1) {
+            if (moveNumber != ERROR_RETURN) {
                 toMove(moveNumber);
             }
         }
