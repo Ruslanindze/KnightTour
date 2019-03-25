@@ -151,8 +151,17 @@ public class Knight {
             }
         }
 
+        valuePreferredOfSquare = availableMoves.length;
         if (!listCorrectChoices.isEmpty()) {
-            chooseMoveNumb = listCorrectChoices.get(random.nextInt(listCorrectChoices.size()));
+            for(int tempMoveNumb : listCorrectChoices){
+                int tempAxisY = locationByAxisY + availableMoves[tempMoveNumb][1];
+                int tempAxisX = locationByAxisX + availableMoves[tempMoveNumb][0];
+
+                if (chessBoard.getValueSquare(tempAxisY, tempAxisX) <= valuePreferredOfSquare){
+                    valuePreferredOfSquare = chessBoard.getValueSquare(tempAxisY, tempAxisX);
+                    chooseMoveNumb = tempMoveNumb;
+                }
+            }
         }
 
         return chooseMoveNumb;
