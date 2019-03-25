@@ -44,17 +44,20 @@ public class Knight {
      * Constructor with initializes of chessboard and location.
      *
      * @param chessBoard - the chessboard where knight is
-     * @param y          - coordinate by axis Y
-     * @param x          - coordinate by axis X
+     * @param axisY      - coordinate by axis Y
+     * @param axisX      - coordinate by axis X
      */
-    public Knight(ChessBoard chessBoard, int y, int x) {
+    public Knight(ChessBoard chessBoard, int axisY, int axisX) {
         this.chessBoard = chessBoard;
 
-        // If is incorrect data then to set location by default (3, 3)
-        if ((y < 0) || (y >= chessBoard.getHeightTheBoard()) ||
-                (x < 0) || (x >= chessBoard.getWidthTheBoard())) {
+        // If is incorrect data then to set location by default (center, center)
+        if ((axisY < 0) || (axisY >= chessBoard.getHeightTheBoard()) ||
+                (axisX < 0) || (axisX >= chessBoard.getWidthTheBoard())) {
             locationByAxisY = chessBoard.getHeightTheBoard() / 2;
             locationByAxisX = chessBoard.getWidthTheBoard() / 2;
+        } else {
+            locationByAxisY = axisY;
+            locationByAxisX = axisX;
         }
 
         ++numberOfMovesMade;
@@ -122,6 +125,30 @@ public class Knight {
     }
 
     /**
+     * The method returns possibles of moves for a Knight from current location (overloaded version).
+     *
+     * @param axisY - coordinate by axis Y
+     * @param axisX - coordinate by axis X
+     * @return
+     */
+    private ArrayList<Integer> getPossibleMoves(int axisY, int axisX) {
+        ArrayList<Integer> possibleMoves = new ArrayList<Integer>();
+
+        for (int i = 0; i < availableMoves.length; i++) {
+            int tempAxisY = axisY + availableMoves[i][1];
+            int tempAxisX = axisX + availableMoves[i][0];
+
+            if (((tempAxisY > -1) && (tempAxisY < chessBoard.getHeightTheBoard())) &&
+                    ((tempAxisX > -1) && (tempAxisX < chessBoard.getWidthTheBoard())) &&
+                    (chessBoard.getValueSquare(tempAxisY, tempAxisX) > -1)) {
+                possibleMoves.add(i);
+            }
+        }
+
+        return possibleMoves;
+    }
+
+    /**
      * The method chooses most preferred the move.
      *
      * @param possibleMoves - possible of moves for Knight
@@ -153,13 +180,23 @@ public class Knight {
 
         valuePreferredOfSquare = availableMoves.length;
         if (!listCorrectChoices.isEmpty()) {
-            for(int tempMoveNumb : listCorrectChoices){
-                int tempAxisY = locationByAxisY + availableMoves[tempMoveNumb][1];
-                int tempAxisX = locationByAxisX + availableMoves[tempMoveNumb][0];
+            for (int currentMoveNumb : listCorrectChoices) {
+                int currentAxisY = locationByAxisY + availableMoves[currentMoveNumb][1];
+                int currentAxisX = locationByAxisX + availableMoves[currentMoveNumb][0];
+                ArrayList<Integer> futurePossibleMoves = getPossibleMoves(currentAxisY, currentAxisX);
 
-                if (chessBoard.getValueSquare(tempAxisY, tempAxisX) <= valuePreferredOfSquare){
-                    valuePreferredOfSquare = chessBoard.getValueSquare(tempAxisY, tempAxisX);
-                    chooseMoveNumb = tempMoveNumb;
+                if (!futurePossibleMoves.isEmpty()) {
+                    for (int futureMoveNumb : futurePossibleMoves) {
+                        int futureAxisY = currentAxisY + availableMoves[futureMoveNumb][1];
+                        int futureAxisX = currentAxisX + availableMoves[futureMoveNumb][0];
+
+                        if (chessBoard.getValueSquare(futureAxisY, futureAxisX) <= valuePreferredOfSquare) {
+                            valuePreferredOfSquare = chessBoard.getValueSquare(futureAxisY, futureAxisX);
+                            chooseMoveNumb = currentMoveNumb;
+                        }
+                    }
+                } else {
+                    chooseMoveNumb = currentMoveNumb;
                 }
             }
         }

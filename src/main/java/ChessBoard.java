@@ -12,7 +12,7 @@ public class ChessBoard {
             {2, 3, 4, 4, 4, 4, 3, 2}};
 
     /**
-     * This getter is.
+     * This is a getter for the property getHeightTheBoard.
      *
      * @return Integer number of height the chessboard
      */
@@ -30,7 +30,7 @@ public class ChessBoard {
     }
 
     /**
-     * This getter is.
+     * This is a getter for the property getWidthTheBoard.
      *
      * @return Integer number of width the chessboard
      */
@@ -49,7 +49,7 @@ public class ChessBoard {
     }
 
     /**
-     * This getter is.
+     * This is a getter for the property getTheBoard.
      *
      * @return Two-dimensional integer array with the values of each square of a chessboard
      */
@@ -67,7 +67,7 @@ public class ChessBoard {
     }
 
     /**
-     * This getter is.
+     * This is a getter for the property getValueSquare.
      *
      * @param axisY - the coordinate by axis "Y"
      * @param axisX - the coordinate by axis "X"
