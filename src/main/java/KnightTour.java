@@ -14,17 +14,17 @@ public class KnightTour {
                 System.out.println("Knight by name knightA begins tour with coordinates (" +
                         knightA.getLocationByAxisX() + "," + knightA.getLocationByAxisY() + ").");
 
-                // Run the knight tour and monitor count moves
+                // Run the knight tour and monitor count moves.
                 numberOfMovesMade = knightA.startTour();
 
                 if (numberOfMovesMade == maxNumbMoves) {
                     System.out.println("It was a very good tour, congratulations! ");
                     ++countSuccessfulTours;
                 } else {
-                    System.out.println("It was a bad tour! I started my journey from the square " +
+                    System.out.println("It was a bad tour! I finished my journey in square " +
                             "with coordinates (" + knightA.getLocationByAxisX() + " ; "
                             + knightA.getLocationByAxisY() + ")");
-                    // Display statistics.
+                    // Display current version of the chessboard.
                     chessBoard.printChessBoard(numberOfMovesMade);
                     System.out.println("\nAll the moves made: " + numberOfMovesMade + "\n");
                 }
