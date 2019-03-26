@@ -1,4 +1,3 @@
-import java.security.SecureRandom;
 import java.util.ArrayList;
 
 public class Knight {
@@ -19,8 +18,6 @@ public class Knight {
     // These variables store location the knight
     private int locationByAxisY;
     private int locationByAxisX;
-    // It's private a object-random
-    private SecureRandom random = new SecureRandom();
     // The variable stores number of moves made
     private int numberOfMovesMade = 0;
 
@@ -51,10 +48,10 @@ public class Knight {
         this.chessBoard = chessBoard;
 
         // If is incorrect data then to set location by default (center, center)
-        if ((axisY < 0) || (axisY >= chessBoard.getHeightTheBoard()) ||
-                (axisX < 0) || (axisX >= chessBoard.getWidthTheBoard())) {
-            locationByAxisY = chessBoard.getHeightTheBoard() / 2;
-            locationByAxisX = chessBoard.getWidthTheBoard() / 2;
+        if ((axisY < 0) || (axisY >= chessBoard.HEIGHT_OF_BOARD) ||
+                (axisX < 0) || (axisX >= chessBoard.WIDTH_OF_BOARD)) {
+            locationByAxisY = chessBoard.HEIGHT_OF_BOARD / 2;
+            locationByAxisX = chessBoard.WIDTH_OF_BOARD / 2;
         } else {
             locationByAxisY = axisY;
             locationByAxisX = axisX;
@@ -114,8 +111,8 @@ public class Knight {
             int tempAxisY = locationByAxisY + availableMoves[i][1];
             int tempAxisX = locationByAxisX + availableMoves[i][0];
 
-            if (((tempAxisY > -1) && (tempAxisY < chessBoard.getHeightTheBoard())) &&
-                    ((tempAxisX > -1) && (tempAxisX < chessBoard.getWidthTheBoard())) &&
+            if (((tempAxisY > -1) && (tempAxisY < chessBoard.HEIGHT_OF_BOARD)) &&
+                    ((tempAxisX > -1) && (tempAxisX < chessBoard.WIDTH_OF_BOARD)) &&
                     (chessBoard.getValueSquare(tempAxisY, tempAxisX) > -1)) {
                 possibleMoves.add(i);
             }
@@ -138,8 +135,8 @@ public class Knight {
             int tempAxisY = axisY + availableMoves[i][1];
             int tempAxisX = axisX + availableMoves[i][0];
 
-            if (((tempAxisY > -1) && (tempAxisY < chessBoard.getHeightTheBoard())) &&
-                    ((tempAxisX > -1) && (tempAxisX < chessBoard.getWidthTheBoard())) &&
+            if (((tempAxisY > -1) && (tempAxisY < chessBoard.HEIGHT_OF_BOARD)) &&
+                    ((tempAxisX > -1) && (tempAxisX < chessBoard.WIDTH_OF_BOARD)) &&
                     (chessBoard.getValueSquare(tempAxisY, tempAxisX) > -1)) {
                 possibleMoves.add(i);
             }
@@ -241,13 +238,9 @@ public class Knight {
      */
     public int startTour() {
         while (!getPossibleMoves().isEmpty()) {
-            ArrayList<Integer> listPosMov = getPossibleMoves();
-            int moveNumber = choosePreferableMove(listPosMov);
-
-            if (moveNumber != ERROR_RETURN) {
-                toMove(moveNumber);
-            }
+            toMove(choosePreferableMove(getPossibleMoves()));
         }
+
         return getNumbMove();
     }
 }

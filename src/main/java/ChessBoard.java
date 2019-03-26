@@ -1,68 +1,22 @@
 public class ChessBoard {
-    private int heightTheBoard = 8;
-    private int widthTheBoard = 8;
-    private int[][] theBoard = {
-            {2, 3, 4, 4, 4, 4, 3, 2},
-            {3, 4, 6, 6, 6, 6, 4, 3},
-            {4, 6, 8, 8, 8, 8, 6, 4},
-            {4, 6, 8, 8, 8, 8, 6, 4},
-            {4, 6, 8, 8, 8, 8, 6, 4},
-            {4, 6, 8, 8, 8, 8, 6, 4},
-            {3, 4, 6, 6, 6, 6, 4, 3},
-            {2, 3, 4, 4, 4, 4, 3, 2}};
+    public final int HEIGHT_OF_BOARD = 8;
+    public final int WIDTH_OF_BOARD = 8;
+    private int[][] theBoard;
 
     /**
-     * This is a getter for the property getHeightTheBoard.
-     *
-     * @return Integer number of height the chessboard
+     * It's default constructor, initializes of the property theBoard.
      */
-    public int getHeightTheBoard() {
-        return heightTheBoard;
-    }
+    public ChessBoard() {
+        int[][] theBoard = {
+                {2, 3, 4, 4, 4, 4, 3, 2},
+                {3, 4, 6, 6, 6, 6, 4, 3},
+                {4, 6, 8, 8, 8, 8, 6, 4},
+                {4, 6, 8, 8, 8, 8, 6, 4},
+                {4, 6, 8, 8, 8, 8, 6, 4},
+                {4, 6, 8, 8, 8, 8, 6, 4},
+                {3, 4, 6, 6, 6, 6, 4, 3},
+                {2, 3, 4, 4, 4, 4, 3, 2}};
 
-    /**
-     * The setter sets of height the chessboard
-     *
-     * @param heightTheBoard - height the chessboard
-     */
-    public void setHeightTheBoard(int heightTheBoard) {
-        this.heightTheBoard = heightTheBoard;
-    }
-
-    /**
-     * This is a getter for the property getWidthTheBoard.
-     *
-     * @return Integer number of width the chessboard
-     */
-    public int getWidthTheBoard() {
-        return widthTheBoard;
-    }
-
-
-    /**
-     * The setter sets of width the chessboard
-     *
-     * @param widthTheBoard - width the chessboard
-     */
-    public void setWidthTheBoard(int widthTheBoard) {
-        this.widthTheBoard = widthTheBoard;
-    }
-
-    /**
-     * This is a getter for the property getTheBoard.
-     *
-     * @return Two-dimensional integer array with the values of each square of a chessboard
-     */
-    public int[][] getTheBoard() {
-        return theBoard;
-    }
-
-    /**
-     * The setter sets the chessboard
-     *
-     * @param theBoard - array with the values of each square
-     */
-    public void setTheBoard(int[][] theBoard) {
         this.theBoard = theBoard;
     }
 
@@ -91,26 +45,24 @@ public class ChessBoard {
     /**
      * The method displays the current chessboard with a price for each square.
      *
-     * @param numberOfMoves - the number of moves made by the knight
+     * @param numberOfMovesMade - the number of moves made by the knight
      */
-    public void printChessBoard(int numberOfMoves) {
+    public void printChessBoard(int numberOfMovesMade) {
         System.out.print("   ");
-        for (int i = 0; i < heightTheBoard; i++) System.out.printf("% 3d", i);
+        for (int i = 0; i < HEIGHT_OF_BOARD; i++) System.out.printf("% 3d", i);
         System.out.print("\n  ***********");
-        for (int i = 0; i < heightTheBoard; i++) System.out.printf("%s", "**");
+        for (int i = 0; i < HEIGHT_OF_BOARD; i++) System.out.printf("%s", "**");
         System.out.println();
 
-        for (int i = 0; i < widthTheBoard; i++) {
+        for (int i = 0; i < WIDTH_OF_BOARD; i++) {
             System.out.print(i + " *");
-            for (int j = 0; j < heightTheBoard; j++) {
+            for (int j = 0; j < HEIGHT_OF_BOARD; j++) {
                 System.out.printf("% 3d", theBoard[i][j]);
             }
             System.out.println(" *");
         }
 
         System.out.print("  ***********");
-        for (int i = 0; i < heightTheBoard; i++) System.out.printf("%s", "**");
-
-        System.out.println("\nAll the moves made: " + numberOfMoves + "\n");
+        for (int i = 0; i < HEIGHT_OF_BOARD; i++) System.out.printf("%s", "**");
     }
 }
