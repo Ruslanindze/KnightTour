@@ -25,7 +25,7 @@ public class KnightTour {
                             "with coordinates (" + knightA.getLocationByAxisX() + " ; "
                             + knightA.getLocationByAxisY() + ")");
                     // Display current version of the chessboard.
-                    chessBoard.printChessBoard(numberOfMovesMade);
+                    chessBoard.printChessBoard();
                     System.out.println("\nAll the moves made: " + numberOfMovesMade + "\n");
                 }
             }

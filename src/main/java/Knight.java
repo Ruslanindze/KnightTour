@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+/**
+ * The class implements the behavior of the Knight's chess piece.
+ */
 public class Knight {
     private final int MARKED_SQUARE = -1;
     private final int ERROR_RETURN = -1;
@@ -93,7 +96,7 @@ public class Knight {
     /**
      * This is a getter for the property numberOfMovesMade.
      *
-     * @return Integer number of moves.
+     * @return integer number of moves.
      */
     public int getNumbMove() {
         return numberOfMovesMade;
@@ -126,7 +129,7 @@ public class Knight {
      *
      * @param axisY - coordinate by axis Y
      * @param axisX - coordinate by axis X
-     * @return
+     * @return Integer list of possible moves
      */
     private ArrayList<Integer> getPossibleMoves(int axisY, int axisX) {
         ArrayList<Integer> possibleMoves = new ArrayList<Integer>();
@@ -146,36 +149,15 @@ public class Knight {
     }
 
     /**
-     * The method chooses most preferred the move.
+     * The method returns the preferred move considering the future move.
      *
-     * @param possibleMoves - possible of moves for Knight
-     * @return Preferred move number
+     * @param listCorrectChoices - moves with the smallest square value
+     * @param chooseMoveNumb     - preferred move number
+     * @return Integer preferred move number
      */
-    private int choosePreferableMove(ArrayList<Integer> possibleMoves) {
-        int chooseMoveNumb = ERROR_RETURN;
+    private int getPreferableFutureMove(ArrayList<Integer> listCorrectChoices, int chooseMoveNumb) {
         int valuePreferredOfSquare = availableMoves.length;
 
-        for (int currMoveNumb : possibleMoves) {
-            int tempAxisY = locationByAxisY + availableMoves[currMoveNumb][1];
-            int tempAxisX = locationByAxisX + availableMoves[currMoveNumb][0];
-
-            valuePreferredOfSquare = Math.min(
-                    valuePreferredOfSquare,
-                    chessBoard.getValueSquare(tempAxisY, tempAxisX));
-        }
-
-        ArrayList<Integer> listCorrectChoices = new ArrayList<Integer>();
-
-        for (int currMoveNumb : possibleMoves) {
-            int tempAxisY = locationByAxisY + availableMoves[currMoveNumb][1];
-            int tempAxisX = locationByAxisX + availableMoves[currMoveNumb][0];
-
-            if (chessBoard.getValueSquare(tempAxisY, tempAxisX) == valuePreferredOfSquare) {
-                listCorrectChoices.add(currMoveNumb);
-            }
-        }
-
-        valuePreferredOfSquare = availableMoves.length;
         if (!listCorrectChoices.isEmpty()) {
             for (int currentMoveNumb : listCorrectChoices) {
                 int currentAxisY = locationByAxisY + availableMoves[currentMoveNumb][1];
@@ -202,6 +184,40 @@ public class Knight {
     }
 
     /**
+     * The method chooses most preferred the move.
+     *
+     * @param possibleMoves - possible of moves for Knight
+     * @return Preferred move number
+     */
+    private int choosePreferableMove(ArrayList<Integer> possibleMoves) {
+        int chooseMoveNumb = ERROR_RETURN;
+        int valuePreferredOfSquare = availableMoves.length;
+
+        // Will find the lowest value of square from of the possible moves.
+        for (int currMoveNumb : possibleMoves) {
+            int tempAxisY = locationByAxisY + availableMoves[currMoveNumb][1];
+            int tempAxisX = locationByAxisX + availableMoves[currMoveNumb][0];
+
+            valuePreferredOfSquare = Math.min(
+                    valuePreferredOfSquare,
+                    chessBoard.getValueSquare(tempAxisY, tempAxisX));
+        }
+
+        // Will find moves with the lowest value of square.
+        ArrayList<Integer> listCorrectChoices = new ArrayList<Integer>();
+        for (int currMoveNumb : possibleMoves) {
+            int tempAxisY = locationByAxisY + availableMoves[currMoveNumb][1];
+            int tempAxisX = locationByAxisX + availableMoves[currMoveNumb][0];
+
+            if (chessBoard.getValueSquare(tempAxisY, tempAxisX) == valuePreferredOfSquare) {
+                listCorrectChoices.add(currMoveNumb);
+            }
+        }
+
+        return getPreferableFutureMove(listCorrectChoices, chooseMoveNumb);
+    }
+
+    /**
      * The method reduces the price of squares depending on the knight's move
      */
     private void reduceAccessibilityNumb() {
@@ -217,7 +233,7 @@ public class Knight {
     }
 
     /**
-     * The method moves the horse given the rules
+     * The method moves the Knight given the rules
      *
      * @param moveNumber - for to select the direction of travel
      */
@@ -232,7 +248,7 @@ public class Knight {
     }
 
     /**
-     * A Knight begins own tour on a chessboard and returns number of moves made
+     * The Knight begins own tour on a chessboard and returns number of moves made
      *
      * @return int getNumbMove
      */

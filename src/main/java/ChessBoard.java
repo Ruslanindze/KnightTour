@@ -7,7 +7,7 @@ public class ChessBoard {
      * It's default constructor, initializes of the property theBoard.
      */
     public ChessBoard() {
-        int[][] theBoard = {
+        theBoard = new int[][]{
                 {2, 3, 4, 4, 4, 4, 3, 2},
                 {3, 4, 6, 6, 6, 6, 4, 3},
                 {4, 6, 8, 8, 8, 8, 6, 4},
@@ -16,8 +16,6 @@ public class ChessBoard {
                 {4, 6, 8, 8, 8, 8, 6, 4},
                 {3, 4, 6, 6, 6, 6, 4, 3},
                 {2, 3, 4, 4, 4, 4, 3, 2}};
-
-        this.theBoard = theBoard;
     }
 
     /**
@@ -44,10 +42,8 @@ public class ChessBoard {
 
     /**
      * The method displays the current chessboard with a price for each square.
-     *
-     * @param numberOfMovesMade - the number of moves made by the knight
      */
-    public void printChessBoard(int numberOfMovesMade) {
+    public void printChessBoard() {
         System.out.print("   ");
         for (int i = 0; i < HEIGHT_OF_BOARD; i++) System.out.printf("% 3d", i);
         System.out.print("\n  ***********");
