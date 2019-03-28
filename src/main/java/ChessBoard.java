@@ -1,3 +1,6 @@
+/**
+ * The class implements the chessboard and stores size and price of a square.
+ */
 public class ChessBoard {
     public final int HEIGHT_OF_BOARD = 8;
     public final int WIDTH_OF_BOARD = 8;

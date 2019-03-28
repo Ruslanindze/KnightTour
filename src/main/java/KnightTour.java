@@ -1,3 +1,6 @@
+/**
+ * The class to start of the Knight tour.
+ */
 public class KnightTour {
 
     public static void main(String[] args) {
